@@ -47,43 +47,50 @@ $("button").on("click", function() {
       // storing the data from the AJAX request in the results variable
       var results = response.data;
 
-      // Looping through each result item
       for (var i = 0; i < results.length; i++) {
 
-        // Creating and storing a div tag
         var cityDiv = $("<div>");
 
-        // Creating a paragraph tag with the result item's rating
         var p = $("<p>").text("Rating: " + results[i].rating);
 
-        // Creating and storing an image tag
         var cityImage = $("<img>");
-        // Setting the src attribute of the image to a property pulled off the result item
-        cityImage.attr("src", results[i].images.fixed_height.url);
+    
+        cityImage.attr("src", results[i].images.fixed_height_still.url);
+
+        cityImage.attr("data-state", "still");
 
         cityImage.addClass(".gif");
 
-        // Appending the paragraph and image tag to the animalDiv
         cityDiv.append(p);
+
         cityDiv.append(cityImage);
 
-        // Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
         $("#gif-space").prepend(cityDiv);
+
+        
       }
+
+      $("img").on("click", function() {
+
+        var state = $(this).attr("data-state");
+
+        if (state === "still") {  
+
+          var gifLink = $(this).attr("src");
+          gifLink = gifLink.replace('_s','');
+          $(this).attr("src", gifLink);
+          $(this).attr("data-state", "animated");
+
+
+        } else {
+          var gifLink = $(this).attr("src");
+          gifLink = gifLink.replace('.gif','_s.gif');
+          $(this).attr("src", gifLink);
+          $(this).attr("data-state", "still");
+
+        }
+      });
+
     });
 });
 
-$(".gif").on("click", function() {
-  // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
-  var state = $(this).attr("data-state");
-  // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-  // Then, set the image's data-state to animate
-  // Else set src to the data-still value
-  if (state === "still") {
-    $(this).attr("src", $(this).attr("data-animate"));
-    $(this).attr("data-state", "animate");
-  } else {
-    $(this).attr("src", $(this).attr("data-still"));
-    $(this).attr("data-state", "still");
-  }
-});
