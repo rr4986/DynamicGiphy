@@ -17,10 +17,11 @@ function renderButtons() {
     newButton.text(topics[i]);
   
     $("#button-space").append(newButton);
+
   }
 }
 
-
+renderButtons();
 
 $("#add-gif").on("click", function(event) {
 
@@ -40,10 +41,8 @@ $("#add-gif").on("click", function(event) {
   
   $("#button-space").append(anotherButton);
 
-  console.log(anotherButton);
 });
 
-renderButtons();
 
 
 $("button").on("click", function() {
@@ -105,7 +104,7 @@ $("button").on("click", function() {
 
 
         } else {
-          
+
           var gifLink = $(this).attr("src");
           gifLink = gifLink.replace('.gif','_s.gif');
           $(this).attr("src", gifLink);
