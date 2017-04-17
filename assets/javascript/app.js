@@ -1,50 +1,72 @@
-var topics = ["New York City", "London", "Paris", "Rome", "Amsterdam", "Munich"]
+var topics = ["New York", "London", "Paris", "Rome", "Madrid", "Shanghai"]
 
 function renderButtons() {
 
-  // Deleting the movies prior to adding new movies
-  // (this is necessary otherwise you will have repeat buttons)
+
   $("#button-space").empty();
 
-  // Looping through the array of movies
+ 
   for (var i = 0; i < topics.length; i++) {
 
-    // Then dynamicaly generating buttons for each movie in the array
-    // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-    var a = $("<button>");
-    // Adding a class of movie to our button
-    a.addClass("city");
-    // Adding a data-attribute
-    a.attr("city-name", topics[i]);
-    // Providing the initial button text
-    a.text(topics[i]);
-    // Adding the button to the buttons-view div
-    $("#button-space").append(a);
+    var newButton = $("<button>");
+
+    newButton.addClass("city");
+ 
+    newButton.attr("city-name", topics[i]);
+ 
+    newButton.text(topics[i]);
+  
+    $("#button-space").append(newButton);
   }
 }
+
+
+
+$("#add-gif").on("click", function(event) {
+
+  event.preventDefault();
+  
+  var gif = $("#gif-input").val().trim();
+  
+  topics.push(gif);
+
+  var anotherButton = $("<button>");
+
+  anotherButton.addClass("city");
+ 
+  anotherButton.attr("city-name", gif);
+ 
+  anotherButton.text(gif);
+  
+  $("#button-space").append(anotherButton);
+
+  console.log(anotherButton);
+});
 
 renderButtons();
 
 
 $("button").on("click", function() {
-  // Grabbing and storing the data-animal property value from the button
+ 
   var city = $(this).attr("city-name");
 
-  // Constructing a queryURL using the animal name
+
   var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
     city + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-  // Performing an AJAX request with the queryURL
+
   $.ajax({
       url: queryURL,
       method: "GET"
     })
-    // After data comes back from the request
+
     .done(function(response) {
+
+      $("#gif-space").empty();
       console.log(queryURL);
 
       console.log(response);
-      // storing the data from the AJAX request in the results variable
+
       var results = response.data;
 
       for (var i = 0; i < results.length; i++) {
@@ -77,12 +99,13 @@ $("button").on("click", function() {
         if (state === "still") {  
 
           var gifLink = $(this).attr("src");
-          gifLink = gifLink.replace('_s','');
+          gifLink = gifLink.replace('_s.gif','.gif');
           $(this).attr("src", gifLink);
           $(this).attr("data-state", "animated");
 
 
         } else {
+          
           var gifLink = $(this).attr("src");
           gifLink = gifLink.replace('.gif','_s.gif');
           $(this).attr("src", gifLink);
@@ -93,4 +116,5 @@ $("button").on("click", function() {
 
     });
 });
+
 
