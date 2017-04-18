@@ -45,7 +45,7 @@ $("#add-gif").on("click", function(event) {
 
 
 
-$("button").on("click", function() {
+$(document).on("click", ".city", function() {
  
   var city = $(this).attr("city-name");
 
